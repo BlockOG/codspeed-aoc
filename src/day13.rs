@@ -23,9 +23,15 @@ pub fn part1(input: &str) -> i32 {
                 + *input.add(2) as i32
                 - b'0' as i32;
             input = input.add(3);
-            while *input != b',' {
-                x = x * 10 + (*input - b'0') as i32;
+            let c = *input;
+            if c >= b'0' {
+                x = x * 10 + (c - b'0') as i32;
                 input = input.add(1);
+                let c = *input;
+                if c >= b'0' {
+                    x = x * 10 + (c - b'0') as i32;
+                    input = input.add(1);
+                }
             }
 
             input = input.add(7);
@@ -33,17 +39,27 @@ pub fn part1(input: &str) -> i32 {
                 + (*input.sub(2) as i32 - b'0' as i32) * 10
                 + *input.sub(1) as i32
                 - b'0' as i32;
-            while *input != b'\n' {
-                y = y * 10 + (*input - b'0') as i32;
+            let c = *input;
+            if c >= b'0' {
+                y = y * 10 + (c - b'0') as i32;
                 input = input.add(1);
+                let c = *input;
+                if c >= b'0' {
+                    y = y * 10 + (c - b'0') as i32;
+                    input = input.add(1);
+                }
             }
 
             let de = ax * by - ay * bx;
-            let a = intrinsics::unchecked_div(x * by - y * bx, de);
-            let b = intrinsics::unchecked_div(y * ax - x * ay, de);
 
-            if a >= 0 && b >= 0 && a * ax + b * bx == x && a * ay + b * by == y {
-                res += a * 3 + b;
+            let a = intrinsics::unchecked_div(x * by - y * bx, de);
+            let ar = intrinsics::unchecked_rem(x * by - y * bx, de);
+            if ar == 0 {
+                let b = intrinsics::unchecked_div(y * ax - x * ay, de);
+                let br = intrinsics::unchecked_rem(y * ax - x * ay, de);
+                if br == 0 {
+                    res += a * 3 + b;
+                }
             }
 
             input = input.add(2);
@@ -76,9 +92,15 @@ pub fn part2(input: &str) -> i64 {
                 + *input.add(2) as i64
                 - b'0' as i64;
             input = input.add(3);
-            while *input != b',' {
-                x = x * 10 + (*input - b'0') as i64;
+            let c = *input;
+            if c >= b'0' {
+                x = x * 10 + (c - b'0') as i64;
                 input = input.add(1);
+                let c = *input;
+                if c >= b'0' {
+                    x = x * 10 + (c - b'0') as i64;
+                    input = input.add(1);
+                }
             }
 
             input = input.add(7);
@@ -86,20 +108,30 @@ pub fn part2(input: &str) -> i64 {
                 + (*input.sub(2) as i64 - b'0' as i64) * 10
                 + *input.sub(1) as i64
                 - b'0' as i64;
-            while *input != b'\n' {
-                y = y * 10 + (*input - b'0') as i64;
+            let c = *input;
+            if c >= b'0' {
+                y = y * 10 + (c - b'0') as i64;
                 input = input.add(1);
+                let c = *input;
+                if c >= b'0' {
+                    y = y * 10 + (c - b'0') as i64;
+                    input = input.add(1);
+                }
             }
 
             x += 10000000000000;
             y += 10000000000000;
 
             let de = ax * by - ay * bx;
-            let a = intrinsics::unchecked_div(x * by - y * bx, de);
-            let b = intrinsics::unchecked_div(y * ax - x * ay, de);
 
-            if a >= 0 && b >= 0 && a * ax + b * bx == x && a * ay + b * by == y {
-                res += a * 3 + b;
+            let a = intrinsics::unchecked_div(x * by - y * bx, de);
+            let ar = intrinsics::unchecked_rem(x * by - y * bx, de);
+            if ar == 0 {
+                let b = intrinsics::unchecked_div(y * ax - x * ay, de);
+                let br = intrinsics::unchecked_rem(y * ax - x * ay, de);
+                if br == 0 {
+                    res += a * 3 + b;
+                }
             }
 
             input = input.add(2);
