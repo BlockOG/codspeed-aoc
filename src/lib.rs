@@ -49,5 +49,6 @@ impl_unchecked_arithmetic!(i8, i16, i32, i64, i128, isize);
 
 pub mod day13;
 pub mod day14;
+pub mod day15;
 
 aoc_lib! { year = 2024 }
