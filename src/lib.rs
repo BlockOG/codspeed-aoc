@@ -1,8 +1,10 @@
-#![allow(internal_features)]
 #![feature(iter_array_chunks)]
 #![feature(portable_simd)]
 #![feature(core_intrinsics)]
 #![feature(maybe_uninit_array_assume_init)]
+#![feature(str_from_raw_parts)]
+#![allow(internal_features)]
+#![allow(static_mut_refs)]
 
 use std::intrinsics;
 
@@ -50,5 +52,6 @@ impl_unchecked_arithmetic!(i8, i16, i32, i64, i128, isize);
 pub mod day13;
 pub mod day14;
 pub mod day15;
+pub mod day17;
 
 aoc_lib! { year = 2024 }
