@@ -1,7 +1,7 @@
 use core::{slice, str};
 use std::{
     mem::transmute,
-    simd::{cmp::SimdPartialEq, num::SimdUint, u16x8, u32x8, u8x16, Mask},
+    simd::{cmp::SimdPartialEq, u8x16},
 };
 
 pub fn part1(input: &str) -> &str {
