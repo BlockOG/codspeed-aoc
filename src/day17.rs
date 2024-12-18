@@ -1,7 +1,7 @@
 use core::{slice, str};
 use std::{
     mem::transmute,
-    simd::{cmp::SimdPartialEq, u8x16},
+    simd::{cmp::SimdPartialEq, num::SimdUint, u16x8, u32x8, u8x16, Mask},
 };
 
 pub fn part1(input: &str) -> &str {
@@ -30,26 +30,19 @@ pub fn part1(input: &str) -> &str {
             ^ (*input.add(71 + 2 + find_x_mask.first_set().unwrap_unchecked()) as u16
                 - b'0' as u16);
 
-        static mut RES: [u8; 18] = [0; 18];
+        static mut RES: [u8; 17] = [0; 17];
         let res_ptr = RES.as_mut_ptr();
 
-        macro_rules! do_output {
-            ($a:ident, $x:ident, $xx:ident, $res_ptr:ident, $c:literal) => {
-                let a = ($a >> 3 * $c) as u16;
-                *($res_ptr as *mut u16).add($c) =
-                    (b',' as u16) << 8 | (b'0' as u16 | (($x ^ a ^ a >> (a & 7 ^ $xx)) & 7));
-            };
-        }
+        let simd = (u32x8::splat(a)
+            >> u32x8::from_array([3 * 0, 3 * 1, 3 * 2, 3 * 3, 3 * 4, 3 * 5, 3 * 6, 3 * 7]))
+        .cast::<u16>();
+        let simd = (u16x8::splat(x) ^ simd ^ simd >> (simd & u16x8::splat(7) ^ u16x8::splat(xx)))
+            & u16x8::splat(7);
+        (simd | u16x8::splat((b',' as u16) << 8 | b'0' as u16))
+            .store_select_ptr(res_ptr as *mut u16, Mask::splat(true));
 
-        do_output!(a, x, xx, res_ptr, 0);
-        do_output!(a, x, xx, res_ptr, 1);
-        do_output!(a, x, xx, res_ptr, 2);
-        do_output!(a, x, xx, res_ptr, 3);
-        do_output!(a, x, xx, res_ptr, 4);
-        do_output!(a, x, xx, res_ptr, 5);
-        do_output!(a, x, xx, res_ptr, 6);
-        do_output!(a, x, xx, res_ptr, 7);
-        do_output!(a, x, xx, res_ptr, 8);
+        let a = (a >> 3 * 8) as u16;
+        *res_ptr.add(16) = (b'0' as u16 | ((x ^ a ^ a >> (a & 7 ^ xx)) & 7)) as u8;
 
         str::from_raw_parts(res_ptr, 17)
     }
