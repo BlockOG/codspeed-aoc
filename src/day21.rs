@@ -12,10 +12,10 @@ macro_rules! parse_num {
 }
 
 #[target_feature(enable = "popcnt,avx2,ssse3,bmi1,bmi2,lzcnt")]
-unsafe fn part1_inner(input: &str) -> u64 {
+unsafe fn part1_inner(input: &str) -> u32 {
     let input = input.as_ptr();
 
-    const LUT: [u64; 1000] = unsafe { transmute(*include_bytes!("../day21p1lut")) };
+    const LUT: [u32; 1000] = unsafe { transmute(*include_bytes!("../day21p1lut")) };
 
     let p1 = parse_num!(input, 0);
     let p2 = parse_num!(input, 5);
@@ -41,7 +41,7 @@ unsafe fn part2_inner(input: &str) -> u64 {
     LUT[p1] + LUT[p2] + LUT[p3] + LUT[p4] + LUT[p5]
 }
 
-pub fn part1(input: &str) -> u64 {
+pub fn part1(input: &str) -> u32 {
     unsafe { part1_inner(input) }
 }
 
