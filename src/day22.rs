@@ -1,4 +1,4 @@
-use core::str;
+use core::{slice, str};
 use std::simd::{num::SimdUint, u32x32};
 
 unsafe fn part1_inner(input: &str) -> u64 {
@@ -53,10 +53,15 @@ unsafe fn part2_inner(input: &str) -> u32 {
     let end = input.add(end);
 
     let mut seq_map = [0; 19usize.pow(4)];
+    let seq_map = seq_map.as_mut_ptr();
     let mut max_v = 0;
 
+    let mut seen = [true; 19usize.pow(4)];
+    let seen = seen.as_mut_ptr();
     while input != end {
-        let mut seen = [true; 19usize.pow(4)];
+        for i in (0..2000).step_by(8) {
+            *(seen.add(i) as *mut u64) = 0x0101010101010101;
+        }
 
         let mut i = 0;
         i += (*input.add(0) as u32 - b'0' as u32) * 10000;
@@ -107,9 +112,9 @@ unsafe fn part2_inner(input: &str) -> u32 {
 
         for _ in 0..2000 - 4 {
             let v = (a * 19 * 19 * 19 + b * 19 * 19 + c * 19 + d) as usize;
-            seq_map[v] += (i % 10) * seen[v] as u32;
-            max_v = max_v.max(seq_map[v]);
-            seen[v] = false;
+            *seq_map.add(v) += (i % 10) * *seen.add(v) as u32;
+            max_v = max_v.max(*seq_map.add(v));
+            *seen.add(v) = false;
 
             last_i = i;
             i ^= (i << 6) & 0xffffff;
