@@ -56,10 +56,10 @@ unsafe fn part2_inner(input: &str) -> u32 {
     let seq_map = seq_map.as_mut_ptr();
     let mut max_v = 0;
 
-    let mut seen = [true; 19usize.pow(4)];
+    let mut seen = [true; 130322];
     let seen = seen.as_mut_ptr();
     while input != end {
-        for i in (0..2000).step_by(8) {
+        for i in (0..130322).step_by(8) {
             *(seen.add(i) as *mut u64) = 0x0101010101010101;
         }
 
