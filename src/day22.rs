@@ -1,4 +1,4 @@
-use core::{slice, str};
+use core::str;
 use std::simd::{num::SimdUint, u32x32};
 
 unsafe fn part1_inner(input: &str) -> u64 {
